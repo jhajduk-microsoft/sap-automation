@@ -244,7 +244,7 @@ stages:
                     fi
 
                 # Check if running on deployer
-                if [[ ! -f /etc/profile.d/deploy_server.sh ]]; then
+                if [ ! -f /etc/profile.d/deploy_server.sh ]; then
                     echo -e "$green --- Install dos2unix ---$reset"
                     sudo apt-get -qq install dos2unix
 
@@ -283,7 +283,7 @@ stages:
                                 echo 'Deployer Key Vault' ${key_vault}
                                 ip_added=0
 
-                                if [[ "azure pipelines" == $(this_agent) ]]; then
+                                if [ "azure pipelines" == $(this_agent) ]; then
                                     this_ip=$(curl -s ipinfo.io/ip) >/dev/null 2>&1
                                     az keyvault network-rule add --name ${key_vault} --ip-address ${this_ip} --only-show-errors --output none
                                     ip_added=1
@@ -347,11 +347,11 @@ stages:
                        fi
                     fi
 
-                    if [[ 1 -eq $ip_added ]]; then
+                    if [ 1 -eq $ip_added ]; then
 
                        agent_name=$(echo $(Agent) | tr '[:upper:]' '[:lower:]')
 
-                       if [[ "azure pipelines" == $(this_agent) ]]; then
+                       if [ "azure pipelines" == $(this_agent) ]; then
                            this_ip=$(curl -s ipinfo.io/ip) >/dev/null 2>&1
                            if [ -n ${key_vault} ]; then
                                az keyvault network-rule remove --name ${key_vault} --ip-address ${this_ip} --no-wait --only-show-errors --output none
