@@ -89,8 +89,6 @@ else {
   Write-Host "Using Workload zone code: $Workload_zone_code" -foregroundColor Yellow
 }
 
-$ApplicationName = $ControlPlanePrefix + "-configuration-app"
-
 if ($Env:SDAF_APP_NAME.Length -ne 0) {
   $ApplicationName = $Env:SDAF_APP_NAME
 }
@@ -98,6 +96,8 @@ if ($Env:SDAF_APP_NAME.Length -ne 0) {
 $ControlPlanePrefix = "SDAF-" + $Control_plane_code
 $WorkloadZonePrefix = "SDAF-" + $Workload_zone_code
 $Pool_Name = $ControlPlanePrefix + "-POOL"
+
+$ApplicationName = $ControlPlanePrefix + "-configuration-app"
 
 $confirmation = Read-Host "Use Agent pool with name '$Pool_Name' y/n?"
 if ($confirmation -ne 'y') {
@@ -717,7 +717,7 @@ else {
   Write-Host "Creating an App Registration for" $ApplicationName -ForegroundColor Green
   Add-Content -Path manifest.json -Value '[{"resourceAppId":"00000003-0000-0000-c000-000000000000","resourceAccess":[{"id":"e1fe6dd8-ba31-4d61-89e7-88639da4683d","type":"Scope"}]}]'
 
-  $APP_REGISTRATION_ID = (az ad app create --display-name $ApplicationName --enable-id-token-issuance true --sign-in-audience AzureADMyOrg --required-resource-access .\manifest.json --query "appId").Replace('"', "")
+  $APP_REGISTRATION_ID = (az ad app create --display-name $ApplicationName --enable-id-token-issuance true --sign-in-audience AzureADMyOrg --required-resource-access manifest.json --query "appId").Replace('"', "")
 
   Remove-Item manifest.json
 
